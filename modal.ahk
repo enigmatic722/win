@@ -20,7 +20,7 @@ Gui, Add, Text, vttext Center, Script
 
 Status:
 ;GuiControl,, ttext, % A_IsSuspended ? "Insert" : "VIM"
-;Gui, Color, % A_IsSuspended ? "FFDDDC" : "C1FFC1"
+;Gui, Color, % A_IsSuspended ? "FFDDDC" : "98C379"
 ;SoundBeep, 1000 + 500 * A_IsSuspended
 If(A_IsSuspended) 
 {
@@ -28,35 +28,39 @@ If(A_IsSuspended)
 } 
 Else
 {
-	Gui, Show, % "NoActivate x" A_ScreenWidth - 400 " y" A_ScreenHeight - 1080
+	;Gui, Show, % "NoActivate x" A_ScreenWidth - 400 " y" A_ScreenHeight - 1080
+	Gui, Show, % "NoActivate x" A_ScreenWidth - 1900 " y" A_ScreenHeight - 50
 	GuiControl,, ttext, % "VI"
-	Gui, Color, %  "C1FFC1"
-	;Gui, Color, %  "008080"
+	Gui, Color, %  "98C379"
+	;Gui, Color, %  "C678DD"
+    ;808080 => gray
+	;C1FFC1 => light green
+    ;61AFEF => light blue
 }
 Return
 
 
-RCtrl::
-	Suspend Off
-	Gosub, Status
-	Gui, Color, %  "EEAA99"
-	mode := 3
-	M_WIDTH := 2300
-Return
+;RCtrl::
+;	Suspend Off
+;	Gosub, Status
+;	Gui, Color, %  "EEAA99"
+;	mode := 3
+;	M_WIDTH := 2300
+;Return
 
-$CapsLock::LCtrl
+;$CapsLock::LCtrl
 
 RAlt::
 	Suspend Off
 	Gosub, Status
 	mode := 1
-    Gui, Color, %  "C1FFC1"
+    Gui, Color, %  "98C379"
 Return
 
 mode := 1 ; inormal == 1, visual == 2, mouse == 3
 
 ;$^F2::
-$^F3::
+$!F3::
 	Reload
 return
 
@@ -78,14 +82,14 @@ $a::
 return
 
 ; pdf tool
-$\::
-	if(isU) {
-		Send {v}
-		isU := false
-	} else {
+$m::
+	;if(isU) {
+		;Send {v}
+		;isU := false
+	;} else {
 		Send {u}
-		isU := true
-	}
+		;isU := true
+	;}
 return
 
 $Esc::
@@ -94,7 +98,7 @@ $Esc::
 	Else {
 		;Send {Left}
 		mode := 1
-		Gui, Color, %  "C1FFC1"
+		Gui, Color, %  "98C379"
 	} 
 return
 
@@ -104,7 +108,7 @@ $^[::
 	} else if(mode = 2) {
 		;Send {Left}
 		mode := 1
-    Gui, Color, %  "C1FFC1"
+    Gui, Color, %  "98C379"
 	} else if(mode = 3) {
 		Send {Esc}
 		If (Toggle){
@@ -115,12 +119,13 @@ $^[::
 return
 
 $v::
+    Gosub, Status
 	if(mode = 1) {
 		mode := 2
-        Gui, Color, %  "008080"
+        Gui, Color, %  "C678DD"
 	} else if(mode = 2) {
         mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
     } else {
 		If (Toggle){
       ;Gui, Show, % "NoActivate x" A_ScreenWidth - 400 " y" A_ScreenHeight - 1080
@@ -129,7 +134,7 @@ $v::
 			Toggle := false
 		  Click, Up
 		} else {
-      Gui, Color, %  "008080"
+      Gui, Color, %  "C678DD"
       ;Gui, Hide
 			Toggle := true
 		    Click, Down
@@ -138,7 +143,7 @@ $v::
 return
 
 $+v::
-    Gui, Color, %  "008080"
+    Gui, Color, %  "C678DD"
 	Send {Home}+{End}
 	mode := 2
 return
@@ -311,6 +316,14 @@ $^f::
     }
 return    
 
+$^d::
+    Send {Down 30}
+return    
+
+$^u::
+    Send {Up 30}
+return    
+
 $^k::
 	if(mode = 3) {
 		;MouseMove, 0, -25, 0, R ; when you press w, mouse will move up 25 pixels
@@ -438,6 +451,13 @@ $+6::
 		Send +{HOME}
 return
 
+$0::
+	If(mode = 1)
+		Send {HOME}
+	Else 
+		Send +{HOME}
+return
+
 $^i::
 	If(mode = 1)
 		Send {HOME}
@@ -466,13 +486,13 @@ $^;::
 	}
 return
 
-$^Enter::
-    Send {Enter}
-	Send !+{0}
-	state := false
-    Suspend on
-    Gosub, Status
-return
+;$^Enter::
+;    Send {Enter}
+;	Send !+{0}
+;	state := false
+;    Suspend on
+;    Gosub, Status
+;return
 
 ;$^m::
 ;	If(mode = 3) {
@@ -597,7 +617,7 @@ $~::
 	}
 return
 
-u::
+$u::
 	If(mode = 1) 
 	{
 		Send ^{z}
@@ -611,7 +631,7 @@ u::
 		StringLower, Clipboard, Clipboard
 		Send ^v
 		mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
 	} Else If(mode = 3) {
 		MouseClick, WheelUp
 	} 
@@ -627,7 +647,7 @@ $+u::
 		StringUpper, Clipboard, Clipboard
 		Send ^v
 		mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
 	}
 return
 
@@ -683,7 +703,7 @@ y::
 	Else If(mode = 2) {
 		Send ^{c}
 		mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
 		Send {Right}
 	} 
 	Else If(mode = 3) {
@@ -710,7 +730,7 @@ $x::
 	Else {
 		Send ^{x}
 		mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
 	}
 return
 
@@ -728,7 +748,7 @@ p::
 		}
 		Send ^{v}
         mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
 	;} else if(mode = 3) {
 ;		if(isCenter) {
 ;			MouseCorner()
@@ -751,7 +771,7 @@ $+p::
 			Send {Left}^{v}
 		}
         mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
 	} else {
 		Send +{p}
 	}
@@ -858,7 +878,7 @@ d::
 	Else If(mode = 2) {
 		Send {Delete}
 		mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
 	}
 	Else If(mode = 3) {
 		MouseClick, WheelDown ; when you press x, mouse will scroll down
@@ -910,12 +930,16 @@ return
 ;	}
 ;return
 
-,::
+$,::
     Send +{Tab}
 return
 
-.::
+$.::
     Send {Tab}
+return
+
+$+.::
+    Send {Tab 4}
 return
 
 e::
@@ -952,7 +976,7 @@ f::
 	    Send {Appskey}
 	} else if(mode = 2) {
         mode := 1
-        Gui, Color, %  "C1FFC1"
+        Gui, Color, %  "98C379"
 	    Send {Appskey}
     } else {
 		If (Toggle){
@@ -967,7 +991,7 @@ return
 $q::Send ^{w}
 
 ;;; App 
-^q::Send !{f4}
+;^q::Send !{f4}
 
 [::
 	Send +^{Tab}
@@ -993,9 +1017,9 @@ return
 $'::Send !{Tab}
 $^'::Send !{Tab}
 
-$m::
-
-return	
+;$m::
+;
+;return	
 
 $-::Send, {Volume_down}
 $=::Send, {Volume_up}
@@ -1192,7 +1216,53 @@ mouseCorner() {
 ;$^,::Send ^{PgUp}
 ;$^.::Send ^{PgDn}
 ;$^'::Send !{Tab}
-$^space::Send #^5
 $^m::Send #{UP}
-$^t::Send #!{d}
 t::Send #{t}
+
+$^#9::
+Suspend, Off
+Process, Exist, Acrobat.exe
+if ErrorLevel = 0
+{
+  Suspend on
+} 
+Else {
+  Send ^#{9}
+  Send {u}
+}
+Gosub, Status
+return
+
+$^#8::
+  Suspend on
+  Gosub, Status
+  Send ^#{8}
+return
+
+$^!9::
+Suspend, Off
+Process, Exist, Acrobat.exe
+if ErrorLevel = 0
+{
+  Suspend on
+} 
+Else {
+  Send ^#{9}
+  Send {u}
+}
+;Gosub, Status
+return
+
+
+$^!8::
+  Suspend, Off
+  Send ^#{8}
+  Suspend on
+  Gosub, Status
+return
+
+$!Space::
+  Suspend on
+  Gosub, Status
+  Send !{Space}
+return
