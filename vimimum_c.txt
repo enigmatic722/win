@@ -1,0 +1,25 @@
+unmap i
+unmap x
+unmap p
+unmap r
+unmap t
+unmap J
+unmap K
+unmap f
+unmap <<
+unmap >>
+unmap <c-e>
+map ' enterInsertMode
+map i LinkHints.activate
+map I LinkHints.activateOpenInNewTab
+map : Vomnibar.activateBookmarksInNewTab
+map ; Vomnibar.activateBookmarks
+map o Vomnibar.activateHistory
+map g; visitPreviousTab
+map <c-m> toggleMuteTab
+map s toggleMuteTab
+map <c-.> nextTab
+map <c-,> previousTab
+mapkey <a-[> <esc>
+mapkey <a-,> H
+mapkey <a-.> L

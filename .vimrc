@@ -429,8 +429,6 @@ let g:netrw_altv = 1
 let g:netrw_preview = 1
 let g:netrw_alto = 0
 
-
-
 function! NetrwMapping()
 endfunction
 
@@ -457,15 +455,12 @@ function! NetrwMapping()
     "nmap <buffer> <Leader>dd :Lexplore<CR>
 endfunction
 
-
-
 call plug#begin()
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-commentary'
 Plug 'mtdl9/vim-log-highlighting'
 Plug 'justinmk/vim-sneak'
 call plug#end()
-
 
 let g:syntastic_python_python_exec = 'python3' 
 
